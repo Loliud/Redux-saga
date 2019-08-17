@@ -21,7 +21,7 @@ class TaskItem extends Component {
                     <i className="fas fa-trash-alt"></i>
                 </div>
             </div>
-        )
+        );
     }
 }
 

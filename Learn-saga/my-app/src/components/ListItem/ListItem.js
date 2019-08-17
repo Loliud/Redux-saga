@@ -28,7 +28,7 @@ const list = [
         description: '17h30 go home',
         status: 'READY'
     }
-]
+];
 
 class ListItem extends Component {
 
@@ -66,7 +66,7 @@ class ListItem extends Component {
                     {this.filterTaskItem(list, 'COMPLETED')}
                 </Col>
             </Row>
-        )
+        );
     }
 }
 

@@ -1,34 +1,11 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'reactstrap';
 import TaskItem from '../TaskItem/TaskItem';
+import {connect} from 'react-redux';
+import *as taskActions from '../../actions/task';
 
-const list = [
-    {
-        name: 'Play soccer',
-        description: 'Go to the stadium',
-        status: 'COMPLETED'
-    },
-    {
-        name: 'Learn Japanese',
-        description: 'Learn minna no nihongo',
-        status: 'READY'
-    },
-    {
-        name: 'Watch TV',
-        description: 'Watch spiderman and batman',
-        status: 'IN-PROGRESS'
-    },
-    {
-        name: 'Do homework',
-        description: 'Learn math, english',
-        status: 'IN-PROGRESS'
-    },
-    {
-        name: 'Go home',
-        description: '17h30 go home',
-        status: 'READY'
-    }
-];
+
+
 
 class ListItem extends Component {
 
@@ -37,37 +14,59 @@ class ListItem extends Component {
 
     }
 
-    filterTaskItem = (list, status) => {
-        let newList = list.filter((item) =>{
-            return item.status === status;
-        });
+    componentDidMount(){
+        this.props.getList();
+    }
 
-        return newList.map((item, index) =>{
-            return (
-                <TaskItem  key={index} name={item.name} description={item.description} status={item.status}/>
-            ) ;
-        });
+    filterTaskItem = (list, status) => {
+       
+            let newList = list.filter((item) =>{
+                return item.status === status;
+            });
+            return newList.map((item, index) =>{
+                return (
+                    <TaskItem  key={index} name={item.name} description={item.description} status={item.status}/>
+                ) ;
+            });
+      
+      
+
+     
     }
 
     render() {
+
+        const {task} = this.props;
         return (
             <Row>
                 <Col md={4}>
                     <h2>READY</h2>
-                    {this.filterTaskItem(list, 'READY')}
+                    {this.filterTaskItem(task, 'READY')}
                 </Col>
                 <Col md={4}>
                     <h2>IN-PROGRESS</h2>
-                    {this.filterTaskItem(list, 'IN-PROGRESS')}
+                    {this.filterTaskItem(task, 'IN-PROGRESS')}
 
                 </Col>
                 <Col md={4}>
                     <h2>COMPLETED</h2>
-                    {this.filterTaskItem(list, 'COMPLETED')}
+                    {this.filterTaskItem(task, 'COMPLETED')}
                 </Col>
             </Row>
         );
     }
 }
 
-export default ListItem;
+let mapStateToProps = state =>{
+    return {
+        task: state.task
+    };
+};
+
+let mapDispatchToProps = (dispatch, props) =>{
+    return {
+        getList: () => dispatch(taskActions.fetchListApi())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListItem);
